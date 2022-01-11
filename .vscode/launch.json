@@ -9,8 +9,8 @@
         "request": "launch",
         "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "args": [],
-        // 默认在 main 函数入口 debugger to stop
-        "stopAtEntry": true,
+        // 在 main 函数入口 debugger to stop
+        "stopAtEntry": false,
         "cwd": "H:\\msys64\\mingw64\\bin",
         "environment": [],
         "externalConsole": false,
