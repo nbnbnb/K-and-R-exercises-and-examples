@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [{
+		"type": "cppbuild",
+		// launch 中的调试任务与此一一对应
+		"label": "C/C++: g++.exe 生成活动文件",
+		"command": "H:\\msys64\\mingw64\\bin\\g++.exe",
+		"args": [
+			"-fdiagnostics-color=always",
+			"-g",
+			// 可以使用 "${workspaceFolder}\\*.cpp" 替代 ${file}，这样将会编译当前目录中的所有 .cpp 文件
+			"${file}",
+			"-o",
+			"${fileDirname}\\${fileBasenameNoExtension}.exe"
+		],
+		"options": {
+			"cwd": "H:\\msys64\\mingw64\\bin"
+		},
+		"problemMatcher": [
+			"$gcc"
+		],
+		"group": {
+			"kind": "build",
+			// specifies that this task will be run when you press Ctrl+Shift+B
+			"isDefault": true
+		},
+		"detail": "编译器: H:\\msys64\\mingw64\\bin\\g++.exe"
+	}]
+}
