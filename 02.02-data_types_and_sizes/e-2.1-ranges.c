@@ -28,9 +28,9 @@ int compute_char(void)
   int i = 0;
 
   while (x)
-    {
-      x = x << 1;   // shift left by 1 bit
-      ++i;
-    }
-  return (i / 8);  // transform bits in bytes
+  {
+    x = x << 1; // shift left by 1 bit
+    ++i;
+  }
+  return (i / 8); // transform bits in bytes
 }

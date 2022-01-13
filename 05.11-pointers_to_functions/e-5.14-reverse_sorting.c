@@ -19,58 +19,57 @@ int main(int argc, char *argv[])
   int numeric = 0;
   int reversed = 0;
 
-  if(argc > 1)
-    while(++i < argc)
-      {
-	while (argv[i][j] != '\0')
-	  switch (argv[i][j++])
-	    {
-	    case 'n':
-	      numeric = 1;
-	      break;
-	    case 'r':
-	      reversed = 1;
-	      break;
-	    }
-	j = 1;
-      }
-  if((nlines = readlines(lineptr, MAXLINES)) >= 0)
+  if (argc > 1)
+    while (++i < argc)
     {
-      qsort2((void **) lineptr, 0, nlines-1,
-	     numeric ? (int (*)(void*, void*)) numcmp :
-	     (int (*)(void*, void*)) strcmp,
-	     reversed ? 1 : 0);
-      writelines(lineptr, nlines);
-      return 0;
+      while (argv[i][j] != '\0')
+        switch (argv[i][j++])
+        {
+        case 'n':
+          numeric = 1;
+          break;
+        case 'r':
+          reversed = 1;
+          break;
+        }
+      j = 1;
     }
+  if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
+  {
+    qsort2((void **)lineptr, 0, nlines - 1,
+           numeric ? (int (*)(void *, void *))numcmp : (int (*)(void *, void *))strcmp,
+           reversed ? 1 : 0);
+    writelines(lineptr, nlines);
+    return 0;
+  }
   else
-    {
-      printf("input too big to sort\n");
-      return 1;
-    }
+  {
+    printf("input too big to sort\n");
+    return 1;
+  }
 }
 
-void qsort2(void *v[], int left, int right, int(*comp)(void *, void *), int reversed)
+void qsort2(void *v[], int left, int right, int (*comp)(void *, void *), int reversed)
 {
   int i, last;
   void swap(void *v[], int, int);
 
-  if(left >= right)
+  if (left >= right)
     return;
   swap(v, left, (left + right) / 2);
   last = left;
-  for(i = left + 1; i <= right; i++)
+  for (i = left + 1; i <= right; i++)
     switch (reversed)
-      {
-      case 0:
-	if((*comp)(v[i], v[left]) < 0)
-	  swap(v, ++last, i);
-	break;
-      case 1:
-	if((*comp)(v[i], v[left]) > 0)
-	  swap(v, ++last, i);
-	break;
-      }
+    {
+    case 0:
+      if ((*comp)(v[i], v[left]) < 0)
+        swap(v, ++last, i);
+      break;
+    case 1:
+      if ((*comp)(v[i], v[left]) > 0)
+        swap(v, ++last, i);
+      break;
+    }
   swap(v, left, last);
   qsort2(v, left, last - 1, comp, reversed);
   qsort2(v, last + 1, right, comp, reversed);
@@ -101,8 +100,7 @@ void swap(void *v[], int i, int j)
   v[j] = temp;
 }
 
-
-#define MAXLEN 1000   // max length of any input line
+#define MAXLEN 1000 // max length of any input line
 int getline(char *, int);
 char *alloc(int);
 
@@ -117,11 +115,11 @@ int readlines(char *lineptr[], int maxlines)
     if (nlines >= maxlines || (p = alloc(len)) == NULL)
       return -1;
     else
-      {
-	line[len-1] = '\0';   // delete newline
-	strcpy(p, line);
-	lineptr[nlines++] = p;
-      }
+    {
+      line[len - 1] = '\0'; // delete newline
+      strcpy(p, line);
+      lineptr[nlines++] = p;
+    }
   return nlines;
 }
 
@@ -130,29 +128,29 @@ int getline(char *s, int lim)
 {
   int c, i;
 
-  for (i = 0; i<lim-1 && (c=getchar()) != EOF && c != '\n'; i++)
+  for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++)
     s[i] = c;
   if (c == '\n')
-    {
-      s[i] = c;
-      ++i;
-    }
+  {
+    s[i] = c;
+    ++i;
+  }
   s[i] = '\0';
   return i;
 }
 
-#define ALLOCSIZE 50000           // size of available space
+#define ALLOCSIZE 50000 // size of available space
 
-static char allocbuf[ALLOCSIZE];  // storage for alloc
-static char *allocp = allocbuf;   // next free position
+static char allocbuf[ALLOCSIZE]; // storage for alloc
+static char *allocp = allocbuf;  // next free position
 
 char *alloc(int n)
 {
-  if (allocbuf + ALLOCSIZE - allocp >= n)   // if it fits
-    {
-      allocp += n;
-      return allocp - n;
-    }
+  if (allocbuf + ALLOCSIZE - allocp >= n) // if it fits
+  {
+    allocp += n;
+    return allocp - n;
+  }
   else
     return 0;
 }
@@ -165,4 +163,3 @@ void writelines(char *lineptr[], int nlines)
   for (i = 0; i < nlines; i++)
     printf("%s\n", lineptr[i]);
 }
-
