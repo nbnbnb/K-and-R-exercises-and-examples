@@ -1,6 +1,9 @@
 /* Write the function htoi(s), which converts a string of hexadecimal digits
    (including an optional 0x or 0X) into its equivalent integer value. The
    allowable digits are 0 through 9, a through f and A through F. */
+
+// 2.7 类型转换
+
 #include <stdio.h>
 #include <ctype.h>
 
@@ -10,7 +13,7 @@ int htoi(char str[]);
 
 int main(void)
 {
-  char s[] = "0x1yf";
+  char s[] = "0xa";
 
   printf("Hex string converted: %d\n", htoi(s));
 
@@ -21,22 +24,23 @@ int main(void)
 int htoi(char s[])
 {
   int i, j, m, num = 0;
+  // 16 进制 mapping
   char ch[] = "0123456789abcdef"; // a map string
-  
-  if ((s[0] == '0')  && ((s[1] == 'x') || (s[1]) == 'X'))
-    m = 2;
-  else
-    m = 0;
-  for (i = m; s[i] != '\0'; ++i)
+
+  //  如果符合转换规则
+  if ((s[0] == '0') && ((s[1] == 'x') || (s[1]) == 'X'))
+  {
     for (j = 0; j <= BASE; ++j)
+    {
+      if (tolower(s[2]) == ch[j])
       {
-	if (tolower(s[i]) == ch[j])
-	{
-	  num = num * 16 + j;
-	  break;
-	}
-	if (j == BASE)
-	  return num;
+        num = num * 16 + j;
+        break;
       }
+      if (j == BASE)
+        return num;
+    }
+  }
+
   return num;
 }

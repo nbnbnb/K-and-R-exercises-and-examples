@@ -24,25 +24,42 @@ int main(void)
 
   while ((len = getline(l, MAXLINE)) > 0) // while length of line > 0 read line
   {
-    i = 0;                   // initialize counter
+    i = 0; // initialize counter
+
     while (l[i + 1] != '\0') // if next char is not NULL
-      if (state == OUT)      // if outside comment
+    {
+      // 指针在注释外
+      if (state == OUT) // if outside comment
       {
+        // 如果遇到注释 /*
         if (comment_start(l, i)) // if a comment starts
-          state = IN;            // change state to inside comment
+        {
+          state = IN; // change state to inside comment
+        }
         else
+        {
           putchar(l[i]);
+        }
+
         ++i; // print char and increment
       }
       else
       {
+
+        // 在注释内
+
         ++i;
+
+        // 遇到了 */ 结尾注释符
         if (comment_end(l, i)) // if comment ends
         {
+          // 重新设置为注释外
           state = OUT;
           ++i; // change state to outside comment and increment
         }
+        
       }
+    }
   }
 
   return 0;
@@ -63,26 +80,39 @@ int getline(char l[], int lim)
   return i;
 }
 
+// /*
+// 注释开头
 /* comment_start: returns 1 if a comment starts, and 0 otherwise. */
 int comment_start(char s[], int i)
 {
+  // 判断是 /*
   if ((s[i] == '/') && (s[i + 1] == '*'))
+  {
     if (!(inside_quotes(s, i - 1)))
+    {
       return 1;
+    }
+  }
   return 0;
 }
 
+// */
+// 注释结尾
 /* comment_end: returns 1 if the comment ends, 0 otherwise. */
 int comment_end(char s[], int i)
 {
+  // 判断是 */
   if ((s[i] == '/') && s[i - 1] == '*')
+  {
     return 1;
+  }
   else
   {
     return 0;
   }
 }
 
+// 判断是否在 " 中
 /* inside_quotes: returns 1 if char is inside quotes, 0 otherwise*/
 int inside_quotes(char s[], int n)
 {
