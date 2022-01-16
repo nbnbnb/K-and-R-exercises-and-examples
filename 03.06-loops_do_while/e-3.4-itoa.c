@@ -6,19 +6,22 @@
 #include <string.h>
 #include <stdlib.h>
 
+// 3.6 do-while 循环
+
 #define MAXLEN 100
 
 void itoa(int n, char s[]);
 void reverse(char s[]);
-  
+
 int main()
 {
-  int n=324;
+  int n = 324;
   char s[MAXLEN];
 
   itoa(n, s);
+
   printf("%s\n", s);
-  
+
   return 0;
 }
 
@@ -28,14 +31,23 @@ void itoa(int n, char s[])
   int i, sign;
 
   sign = n;
-  n = abs(n);          // sets n to be positive
+  // abs 是 <stdlib.h> 中的函数
+  n = abs(n); // sets n to be positive
   i = 0;
-  do {                 // generate digits in reverse order      
+
+  // generate digits in reverse order
+  do
+  {
     s[i++] = n % 10 + '0';
   } while ((n /= 10) > 0);
+
   if (sign < 0)
+  {
     s[i++] = '-';
+  }
+
   s[i] = '\0';
+
   reverse(s);
 }
 
@@ -43,11 +55,12 @@ void reverse(char s[])
 {
   int i, j;
   char c;
-  
+
+  // strlen 是 <string.h> 中的函数
   for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
-    {
-      c = s[i];
-      s[i] = s[j];
-      s[j] = c;
-    }
+  {
+    c = s[i];
+    s[i] = s[j];
+    s[j] = c;
+  }
 }
