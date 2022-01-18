@@ -7,10 +7,14 @@
 #include <stdlib.h>
 
 // 3.6 do-while 循环
-
+// itoa 函数是 atoi 函数的逆函数，将数字转换为字符串
 #define MAXLEN 100
 
+// 将 int 转换为字符数组
 void itoa(int n, char s[]);
+
+// 反转字符数组
+// 例如：将 '423' 转成 '324'
 void reverse(char s[]);
 
 int main()
@@ -71,9 +75,11 @@ void itoa(int n, char s[])
   s[i] = '\0';
 
   // 将 '423' 转成 '324'
+  // 将 '423-' 转成 '-324'
   reverse(s);
 }
 
+// 字符串反转
 void reverse(char s[])
 {
   int i, j;
