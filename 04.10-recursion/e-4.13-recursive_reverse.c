@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+
+
 #define MAXLEN 100
 
 void reverse(char s[]);
@@ -21,9 +23,13 @@ void reverse(char s[])
   static int i = 0;
   int temp;
 
-  temp = s[strlen(s)-i-1];
-  s[strlen(s)-i-1] = s[i];
+  temp = s[strlen(s) - i - 1];
+  s[strlen(s) - i - 1] = s[i];
   s[i] = temp;
-  if (i++ < (strlen(s)/2))
+
+  if (i++ < (strlen(s) / 2))
+  {
+    // 递归调用
     reverse(s);
+  }
 }
