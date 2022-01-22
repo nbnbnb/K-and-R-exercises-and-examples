@@ -2,29 +2,32 @@
 #include <ctype.h>
 #include <string.h>
 
+// 6.4 指向结构的指针
+
 #define MAXWORD 100
 #define NKEYS (sizeof keytab / sizeof keytab[0])
 
-struct key 
+struct key
 {
   char *word;
   int count;
-} keytab[] = 
-  {
-    "auto", 0,
-    "break", 0,
-    "case", 0,
-    "char", 0,
-    "continue", 0,
-    /*...*/
-    "unsigned", 0,
-    "void", 0,
-    "volatile", 0,
-    "while", 0
-  };
+} keytab[] =
+    {
+        "auto", 0,
+        "break", 0,
+        "case", 0,
+        "char", 0,
+        "continue", 0,
+        "unsigned", 0,
+        "void", 0,
+        "volatile", 0,
+        "while", 0};
 
 int getword(char *, int);
+// 注意，此处的函数签名
+// struct key *
 struct key *binsearch(char *, struct key *, int);
+// struct key *binsearch(char *word, struct key *tab, int n)
 
 /* count C keywords */
 int main(void)
@@ -32,14 +35,25 @@ int main(void)
   char word[MAXWORD];
   struct key *p;
 
-  while(getword(word, MAXWORD) != EOF)
+  while (getword(word, MAXWORD) != EOF)
+  {
     if (isalpha(word[0]))
+    {
       if ((p = binsearch(word, keytab, NKEYS)) != NULL)
-	p->count++;
+      {
+        p->count++;
+      }
+    }
+  }
+
   for (p = keytab; p < keytab + NKEYS; p++)
+  {
     if (p->count > 0)
-      printf("%4d %s\n",
-	     p->count, p->word);
+    {
+      printf("%4d %s\n", p->count, p->word);
+    }
+  }
+
   return 0;
 }
 
@@ -47,20 +61,35 @@ int main(void)
 struct key *binsearch(char *word, struct key *tab, int n)
 {
   int cond;
+  // tab 是指向结构的指针
+  // tab[0] 是数组 0 的元素，是一个 key struct
+  // 让后取其地址 就是一个结构指针
+
+  // 声明 3 个结构指针
   struct key *low = &tab[0];
   struct key *high = &tab[n];
   struct key *mid;
-  
+
   while (low < high)
+  {
+    // 由于是同类型指针
+    // 可以进行运算操作
+    mid = low + (high - low) / 2;
+
+    if ((cond = strcmp(word, mid->word)) < 0)
     {
-      mid = low + (high - low) / 2;
-      if ((cond = strcmp(word, mid->word)) < 0)
-	high = mid - 1;
-      else if (cond > 0)
-	low = mid + 1;
-      else
-	return mid;
+      high = mid - 1;
     }
+    else if (cond > 0)
+    {
+      low = mid + 1;
+    }
+    else
+    {
+      return mid;
+    }
+  }
+
   return NULL;
 }
 
@@ -73,36 +102,50 @@ int getword(char *word, int lim)
 
   while (isspace(c = getch()))
     ;
+
   if (c != EOF)
+  {
     *w++ = c;
+  }
+
   if (!isalpha(c))
-    {
-      *w = '\0';
-      return c;
-    }
-  for ( ; --lim > 0; w++)
+  {
+    *w = '\0';
+    return c;
+  }
+
+  for (; --lim > 0; w++)
+  {
     if (!isalnum(*w = getch()))
-      {
-	ungetch(*w);
-	break;
-      }
+    {
+      ungetch(*w);
+      break;
+    }
+  }
+
   *w = '\0';
+
   return word[0];
 }
 
 #define BUFFSIZE 100
 
-char buf[BUFFSIZE];  // buffer for ungetch
-int bufp = 0;        // next free posotion in buf
+char buf[BUFFSIZE]; // buffer for ungetch
+int bufp = 0;       // next free posotion in buf
 
-int getch(void)      // get a (possibly pushed back) character
+int getch(void) // get a (possibly pushed back) character
 {
   return (bufp > 0) ? buf[--bufp] : getchar();
 }
 
-void ungetch(int c)  // push back on input
+void ungetch(int c) // push back on input
 {
   if (bufp >= BUFFSIZE)
+  {
     printf("ungetch: too many characters\n");
-  else buf[bufp++] = c;
+  }
+  else
+  {
+    buf[bufp++] = c;
+  }
 }
