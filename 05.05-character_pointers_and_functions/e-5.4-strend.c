@@ -2,30 +2,53 @@
    end of the string s and zero otherwise. */
 #include <stdio.h>
 
-int strend(char *, char *);
+// 5.5 字符指针与字符串
+
+// strend(s,t) 函数判断 t 是否为 s 的结尾
+// 如果是，返回 1
+// 如果不是，返回 0
+int strend(char *p_s1, char *p_s2);
 
 int main(void)
 {
-  
-  char *s1, *s2;
-  char s3 [] = "first",  s4[] = "rst";
 
-  s1 = s3;
-  s2 = s4;
+  char *p_s1, *p_s2;
+  char s3[] = "first", s4[] = "rst";
 
-  printf("%d", strend(s1, s2));
+  p_s1 = s3;
+  p_s2 = s4;
+
+  printf("%d", strend(p_s1, p_s2));
   return 0;
 }
 
-int strend(char *s, char *t)
+int strend(char *p_s1, char *p_s2)
 {
-  int n = 0;
-  
-  for (;*s != '\0'; s++)
+  int n = 1;
+
+  // p_s1 跑到 EOF
+  for (; *p_s1 != '\0'; p_s1++)
     ;
-  for (;*t != '\0'; t++)
+
+  // p_s2 跑到 EOF
+  for (; *p_s2 != '\0'; p_s2++)
+  {
+    // 计算 p_s2 的长度
     n++;
-  while (n > 0 && (*s-- == *t--))
+  }
+
+  // 从后向前对比
+  // 每匹配成功一个
+  // 则 n-1
+  // 最后 n 表示不匹配的字符数
+  while (n > 0 && (*p_s1-- == *p_s2--))
+  {
     n--;
+  }
+
+  // 如果有不匹配的字符数
+  // 返回 0
+  // 没有不匹配的字符数
+  // 返回 1
   return (n > 0) ? 0 : 1;
 }
